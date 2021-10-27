@@ -1,11 +1,7 @@
-import { useRegistry } from '@bem-react/di';
-import type { NextPage } from 'next';
 import styled, { css } from 'styled-components';
-import { gql, GraphQLClient } from 'graphql-request';
 
+import { getGQL, Post } from '../utils/gql';
 import { textColorPrimary, textColorSecondary, iconColorPrimary } from '../@generated/themes';
-// import { usePostsQuery } from '../@generated/queries';
-import { getSdk, Post } from '../@generated/sdk';
 import { Icon } from '../components/Icon/Icon';
 
 const timeAgo = (previous: string) => {
@@ -165,10 +161,7 @@ export default function Home({ posts }: HomeProps) {
 };
 
 export async function getStaticProps() {
-    const gqlClient = new GraphQLClient(process.env.TODAIlY_GQL_GATE!);
-    gqlClient.setHeader('Authorization', `Bearer ${process.env.TODAILY_GQL_TOKEN}`);
-
-    const gqlSdk = getSdk(gqlClient);
+    const gqlSdk = getGQL();
     const { posts } = await gqlSdk.posts();
 
     return {

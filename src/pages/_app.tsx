@@ -4,7 +4,7 @@ import Head from 'next/head';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 import head from '../../.todaily/head';
-
+import { useHotkeys } from '../hooks/useHotkeys';
 import { GlobalStyle } from '../components/GlobalStyle/GlobalStyle';
 import { Theme, ThemeProvider } from '../components/Theme/Theme';
 import { Root } from '../components/Root/Root';
@@ -22,6 +22,8 @@ const apolloClient = new ApolloClient({
 });
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
+    useHotkeys();
+
     const theme = 'dark';
 
     return (
