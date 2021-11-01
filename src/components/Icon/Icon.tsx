@@ -12,6 +12,9 @@ const componentsMap = {
     heart: dynamic(() => import('teenyicons/outline/heart.svg')),
     chat: dynamic(() => import('teenyicons/outline/chat.svg')),
     moreVertical: dynamic(() => import('teenyicons/outline/more-vertical.svg')),
+    markdown: dynamic(() => import('teenyicons/outline/markdown.svg')),
+    tag: dynamic(() => import('teenyicons/outline/tag.svg')),
+    image: dynamic(() => import('teenyicons/outline/image-alt.svg')),
 };
 
 export const iconTypes = Object.keys(componentsMap);
@@ -28,7 +31,6 @@ interface IconProps {
     size: keyof typeof sizesMap;
     color?: string;
     stroke?: number;
-    className?: string;
     onClick?: (e: React.MouseEvent) => void;
 }
 

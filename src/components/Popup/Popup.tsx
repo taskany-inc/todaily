@@ -1,31 +1,36 @@
 import React, { ComponentProps } from 'react';
 import Tippy from '@tippyjs/react/headless';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+import { backgroundColorSecondary } from '../../@generated/themes';
 
 /**
  * @see all props https://atomiks.github.io/tippyjs/v6/all-props/
  */
 interface PopupProps {
-    placement: ComponentProps<typeof Tippy>['placement'];
-    trigger: ComponentProps<typeof Tippy>['trigger'];
-    interactive: ComponentProps<typeof Tippy>['interactive'];
-    hideOnClick: ComponentProps<typeof Tippy>['hideOnClick'];
-    visible: boolean;
+    placement?: ComponentProps<typeof Tippy>['placement'];
+    trigger?: ComponentProps<typeof Tippy>['trigger'];
+    interactive?: ComponentProps<typeof Tippy>['interactive'];
+    hideOnClick?: ComponentProps<typeof Tippy>['hideOnClick'];
+    visible?: boolean;
     target: React.ReactElement;
-    arrow: boolean;
+    arrow?: boolean;
+    overflow?: 'hidden';
+    minWidth?: number;
 
-    onTrigger: ComponentProps<typeof Tippy>['onTrigger'];
-    onShow: ComponentProps<typeof Tippy>['onShow'];
-    onShown: ComponentProps<typeof Tippy>['onShown'];
-    onMount: ComponentProps<typeof Tippy>['onMount'];
-    onHide: ComponentProps<typeof Tippy>['onHide'];
-    onHidden: ComponentProps<typeof Tippy>['onHidden'];
-    onClickOutside: ComponentProps<typeof Tippy>['onClickOutside'];
+    onTrigger?: ComponentProps<typeof Tippy>['onTrigger'];
+    onShow?: ComponentProps<typeof Tippy>['onShow'];
+    onShown?: ComponentProps<typeof Tippy>['onShown'];
+    onMount?: ComponentProps<typeof Tippy>['onMount'];
+    onHide?: ComponentProps<typeof Tippy>['onHide'];
+    onHidden?: ComponentProps<typeof Tippy>['onHidden'];
+    onClickOutside?: ComponentProps<typeof Tippy>['onClickOutside'];
 }
 
 const StyledPopupArrow = styled.div`
     visibility: hidden;
     position: absolute;
+    z-index: 0;
 
     width: 8px;
     height: 8px;
@@ -35,6 +40,7 @@ const StyledPopupArrow = styled.div`
     &::before {
         visibility: visible;
         position: absolute;
+        z-index: 0;
 
         width: 8px;
         height: 8px;
@@ -47,15 +53,34 @@ const StyledPopupArrow = styled.div`
     }
 `;
 
-const StyledPopupContainer = styled.div`
-    background: #333;
+const StyledPopupContent = styled.div`
+    position: relative;
+    z-index: 1;
+`;
 
-    color: white;
-    font-size: 13px;
+const StyledPopupContainer = styled.div<{ overflow?: PopupProps['overflow']; minWidth?: PopupProps['minWidth'] }>`
+    position: relative;
 
-    padding: 4px 8px;
+    background: ${backgroundColorSecondary};
 
     border-radius: 4px;
+
+    ${StyledPopupContent} {
+        ${({ overflow }) =>
+            overflow
+                ? css`
+                      overflow: hidden;
+                  `
+                : css`
+                      padding: 4px 8px;
+                  `}
+
+        ${({ minWidth }) =>
+            minWidth &&
+            css`
+                min-width: ${minWidth}px;
+            `}
+    }
 
     &[data-placement^='top'] > ${StyledPopupArrow} {
         bottom: -4px;
@@ -78,13 +103,22 @@ const StyledPopupContainer = styled.div`
  * @see https://github.com/atomiks/tippyjs-react
  * Styling https://popper.js.org/docs/v2/tutorial/#styling
  */
-export const Popup: React.FC<PopupProps> = ({ placement = 'auto', children, target, arrow = true, ...props }) => (
+export const Popup: React.FC<PopupProps> = ({
+    placement = 'auto',
+    children,
+    target,
+    overflow,
+    minWidth,
+    arrow = true,
+    ...props
+}) => (
     <Tippy
         {...props}
         placement={placement}
         render={(attrs) => (
-            <StyledPopupContainer tabIndex={-1} {...attrs}>
-                {children}
+            <StyledPopupContainer minWidth={minWidth} overflow={overflow} tabIndex={-1} {...attrs}>
+                <StyledPopupContent>{children}</StyledPopupContent>
+
                 {arrow && <StyledPopupArrow data-popper-arrow />}
             </StyledPopupContainer>
         )}

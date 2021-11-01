@@ -1,13 +1,14 @@
 import React from 'react';
 
 import { getGQL, Post } from '../../utils/gql';
+import { H1 } from '../../components/Typography/Typography';
 
 interface PageProps {
     post: Post;
 }
 
 export default function Page({ post }: PageProps) {
-    return <h1>Post: {post.title}</h1>;
+    return <H1>{post.title}</H1>;
 }
 
 export async function getStaticPaths() {

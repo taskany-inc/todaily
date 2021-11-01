@@ -5,6 +5,10 @@ import { iconColorPrimary } from '../../@generated/themes';
 import { useComponents } from '..';
 import { Icon } from '../Icon/Icon';
 import { User } from '../User/User';
+import { Popup } from '../Popup/Popup';
+import { Link } from '../Link/Link';
+import { List, ListItem } from '../List/List';
+import { routes } from '../../hooks/router';
 
 const StyledHeader = styled.header`
     position: relative;
@@ -29,6 +33,8 @@ const StyledHeaderItem = styled.div`
 
 const StyledCreateButton = styled.div`
     margin-right: 20px;
+
+    cursor: pointer;
 `;
 
 const ServicesSwitch = styled.div`
@@ -37,7 +43,7 @@ const ServicesSwitch = styled.div`
     margin-top: 5px;
     margin-left: -25px;
 
-    opacity: .6;
+    opacity: 0.6;
 `;
 
 export const Header: React.FC = () => {
@@ -65,9 +71,25 @@ export const Header: React.FC = () => {
 
             <StyledAlignContainer>
                 <StyledHeaderItem>
-                    <StyledCreateButton>
-                        <Icon type="plusCircle" size="xs" color={iconColorPrimary} />
-                    </StyledCreateButton>
+                    <Popup
+                        interactive
+                        overflow="hidden"
+                        minWidth={150}
+                        target={
+                            <StyledCreateButton>
+                                <Icon type="plusCircle" size="xs" color={iconColorPrimary} />
+                            </StyledCreateButton>
+                        }
+                    >
+                        <List>
+                            <ListItem interactive>
+                                <Link href={routes.createPost()}>New post</Link>
+                            </ListItem>
+                            <ListItem interactive>
+                                <Link href={routes.createChannel()}>New channel</Link>
+                            </ListItem>
+                        </List>
+                    </Popup>
                 </StyledHeaderItem>
 
                 <StyledHeaderItem>

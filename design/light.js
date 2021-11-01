@@ -5,6 +5,10 @@ module.exports = {
     textColorSecondary: '#586069',
     iconColorPrimary: '#000',
 
+    menuItemColorHover: 'rgba(0, 0, 0, 0.65)',
+
+    formBackgroundColor: 'rgba(255, 255, 255, .2)',
+
     textColorTertiary: '#6a737d',
     textColorDanger: '#cb2431',
     textColorDescription: '#8b949e',

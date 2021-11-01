@@ -2,7 +2,9 @@ import styled, { css } from 'styled-components';
 
 import { getGQL, Post } from '../utils/gql';
 import { textColorPrimary, textColorSecondary, iconColorPrimary } from '../@generated/themes';
+import { Link } from '../components/Link/Link';
 import { Icon } from '../components/Icon/Icon';
+import { routes } from '../hooks/router';
 
 const timeAgo = (previous: string) => {
     const msPerMinute = 60 * 1000;
@@ -27,10 +29,6 @@ const timeAgo = (previous: string) => {
         return `${Math.round(elapsed / msPerYear)} years ago`;
     }
 };
-
-const StyledFeed = styled.main`
-    padding: 60px 0 0 40px;
-`;
 
 const StyledFeedPost = styled.div`
     position: relative;
@@ -59,8 +57,7 @@ const StyledFeedPostPromo = styled.div`
 
     font-size: 16px;
     color: ${textColorPrimary};
-`
-;
+`;
 const StyledFeedPostActivity = styled.div`
     padding-top: 20px;
 
@@ -68,12 +65,12 @@ const StyledFeedPostActivity = styled.div`
     color: ${textColorPrimary};
 `;
 
-const StyledFeedPostComments= styled.div`
+const StyledFeedPostComments = styled.div`
     display: flex;
     align-items: baseline;
 `;
 
-const StyledFeedPostCommentsCount= styled.span`
+const StyledFeedPostCommentsCount = styled.span`
     display: flex;
 
     padding-left: 10px;
@@ -81,8 +78,7 @@ const StyledFeedPostCommentsCount= styled.span`
     font-size: 16px;
 `;
 
-const StyledFeedPostReactions= styled.div`
-`;
+const StyledFeedPostReactions = styled.div``;
 
 const StyledFavoriteTrigger = styled.div`
     position: absolute;
@@ -101,13 +97,13 @@ const StyledTag = styled.span<{ borderColor: string; backgroundColor: string }>`
     border-width: 1px;
     border-style: solid;
 
-    ${(({ borderColor, backgroundColor }) => css`
+    ${({ borderColor, backgroundColor }) => css`
         border-color: ${borderColor};
 
         background-color: ${backgroundColor};
 
         color: ${borderColor};
-    `)}
+    `}
 
     font-size: 12px;
     font-weight: 500;
@@ -117,8 +113,12 @@ const Tag: React.FC<{ rgb: string }> = ({ rgb, children }) => {
     const borderColor = `rgba(${rgb},1)`;
     const backgroundColor = `rgba(${rgb},.15)`;
 
-    return <StyledTag borderColor={borderColor} backgroundColor={backgroundColor}>{children}</StyledTag>
-}
+    return (
+        <StyledTag borderColor={borderColor} backgroundColor={backgroundColor}>
+            {children}
+        </StyledTag>
+    );
+};
 
 interface HomeProps {
     posts?: Post[];
@@ -128,7 +128,7 @@ export default function Home({ posts }: HomeProps) {
     if (!posts) return <>No posts yet</>;
 
     return (
-        <StyledFeed>
+        <>
             {posts.map((post) => {
                 const author = post?.author?.name;
                 const channel = post?.channels ? ` in ${post?.channels[0]?.title}` : '';
@@ -141,10 +141,19 @@ export default function Home({ posts }: HomeProps) {
                         </StyledFavoriteTrigger>
 
                         <StyledFeedPostTitle>
-                            <span>{post?.title}</span>
-                            {post?.tags?.map((tag) => <Tag key={tag?.title} rgb={tag?.rgb!}>{tag?.title}</Tag>)}
+                            <Link type="inline" href={routes.post(post.slug!)}>
+                                {post?.title}
+                            </Link>
+                            {post?.tags?.map((tag) => (
+                                <Tag key={tag?.title} rgb={tag?.rgb!}>
+                                    {tag?.title}
+                                </Tag>
+                            ))}
                         </StyledFeedPostTitle>
-                        <StyledFeedPostMeta>{author} posted {channel} {time}</StyledFeedPostMeta>
+
+                        <StyledFeedPostMeta>
+                            {author} posted {channel} {time}
+                        </StyledFeedPostMeta>
                         <StyledFeedPostPromo>{post?.promo}</StyledFeedPostPromo>
                         <StyledFeedPostActivity>
                             <StyledFeedPostComments>
@@ -156,9 +165,9 @@ export default function Home({ posts }: HomeProps) {
                     </StyledFeedPost>
                 );
             })}
-        </StyledFeed>
+        </>
     );
-};
+}
 
 export async function getStaticProps() {
     const gqlSdk = getGQL();
