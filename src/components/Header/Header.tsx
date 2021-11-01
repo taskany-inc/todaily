@@ -53,7 +53,7 @@ export const Header: React.FC = () => {
         <StyledHeader>
             <StyledAlignContainer>
                 <ServicesSwitch>
-                    <Icon type="moreVertical" size="s" color={iconColorPrimary} />
+                    <Icon inline type="moreVertical" size="s" color={iconColorPrimary} />
                 </ServicesSwitch>
 
                 <StyledHeaderItem>
@@ -65,7 +65,7 @@ export const Header: React.FC = () => {
                 </StyledHeaderItem>
 
                 <StyledHeaderItem>
-                    <Icon type="search" size="xs" color={iconColorPrimary} />
+                    <Icon inline type="search" size="xs" color={iconColorPrimary} />
                 </StyledHeaderItem>
             </StyledAlignContainer>
 
@@ -77,7 +77,7 @@ export const Header: React.FC = () => {
                         minWidth={150}
                         target={
                             <StyledCreateButton>
-                                <Icon type="plusCircle" size="xs" color={iconColorPrimary} />
+                                <Icon inline type="plusCircle" size="xs" color={iconColorPrimary} />
                             </StyledCreateButton>
                         }
                     >

@@ -1,26 +1,128 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-import { buttonTextColor, buttonBackgroundColor, buttonBorderColor } from '../../@generated/themes';
+import { Icon } from '../Icon/Icon';
+import {
+    buttonTextColor,
+    buttonBackgroundColor,
+    buttonBorderColor,
+    buttonPrimaryTextColor,
+    buttonPrimaryBackgroundColor,
+} from '../../@generated/themes';
 
 interface ButtonProps {
     type?: 'default' | 'primary';
-    size: 's' | 'm' | 'l';
+    size?: 's' | 'm' | 'l';
+    iconLeft?: React.ComponentProps<typeof Icon>['type'];
+    iconRight?: React.ComponentProps<typeof Icon>['type'];
 }
 
-const StyledButton = styled.button<{ size: ButtonProps['size']}>`
+const StyledButton = styled.button<{
+    size: ButtonProps['size'];
+    iconLeft: ButtonProps['iconLeft'];
+    iconRight: ButtonProps['iconRight'];
+}>`
     appearance: none;
 
-    display: inline-block;
+    display: flex;
+    align-items: center;
+
+    cursor: pointer;
 
     border-radius: 6px;
 
-    ${({ size }) => size === 's' && css`
-        font-size: 12px;
-        font-weight: 600;
+    ${({ size }) =>
+        size === 's' &&
+        css`
+            font-size: 12px;
+            font-weight: 500;
 
-        padding: 5px 9px;
-    `}
+            padding: 4px 8px;
+        `}
+
+    ${({ size, iconRight }) =>
+        size === 's' &&
+        iconRight &&
+        css`
+            padding-right: 4px;
+
+            ${StyledButtonText} {
+                padding-right: 4px;
+            }
+        `}
+
+    ${({ size, iconLeft }) =>
+        size === 's' &&
+        iconLeft &&
+        css`
+            padding-left: 4px;
+
+            ${StyledButtonText} {
+                padding-left: 4px;
+            }
+        `}
+
+    ${({ size }) =>
+        size === 'm' &&
+        css`
+            font-size: 14px;
+            font-weight: 500;
+
+            padding: 6px 10px;
+        `}
+
+    ${({ size, iconRight }) =>
+        size === 'm' &&
+        iconRight &&
+        css`
+            padding-right: 5px;
+
+            ${StyledButtonText} {
+                padding-right: 5px;
+            }
+        `}
+
+    ${({ size, iconLeft }) =>
+        size === 'm' &&
+        iconLeft &&
+        css`
+            padding-left: 5px;
+
+            ${StyledButtonText} {
+                padding-left: 5px;
+            }
+        `}
+
+    ${({ size }) =>
+        size === 'l' &&
+        css`
+            font-size: 16px;
+            font-weight: 500;
+
+            padding: 8px 14px;
+        `}
+
+    ${({ size, iconRight }) =>
+        size === 'l' &&
+        iconRight &&
+        css`
+            padding-right: 7px;
+
+            ${StyledButtonText} {
+                padding-right: 7px;
+            }
+        `}
+
+    ${({ size, iconLeft }) =>
+        size === 'l' &&
+        iconLeft &&
+        css`
+            padding-left: 7px;
+
+            ${StyledButtonText} {
+                padding-left: 7px;
+            }
+        `}
 `;
 
 const StyledButtonDefault = styled(StyledButton)`
@@ -29,20 +131,42 @@ const StyledButtonDefault = styled(StyledButton)`
     background-color: ${buttonBackgroundColor};
 
     border: 1px solid ${buttonBorderColor};
+
+    svg {
+        color: ${buttonTextColor};
+    }
 `;
 
 const StyledButtonPrimary = styled(StyledButton)`
+    color: ${buttonPrimaryTextColor};
+
+    background-color: ${buttonPrimaryBackgroundColor};
+
+    border: 0;
+
+    svg {
+        color: ${buttonPrimaryTextColor};
+    }
 `;
 
-export const Button: React.FC<ButtonProps> = ({ type = 'default', size, children }) => {
-    const wrappersMap: Record<typeof type, React.FC> = {
+const StyledButtonText = styled.span`
+    display: flex;
+`;
+
+export const Button: React.FC<ButtonProps> = ({ type = 'default', size = 'm', iconLeft, iconRight, children }) => {
+    const Wrapper = ({
         default: StyledButtonDefault,
         primary: StyledButtonPrimary,
-    };
+    } as Record<typeof type, typeof StyledButton>)[type];
 
-    const Wrapper = wrappersMap[type];
+    const content = [];
+    if (iconLeft) content.push(<Icon size="xs" type={iconLeft} />);
+    content.push(<StyledButtonText>{children}</StyledButtonText>);
+    if (iconRight) content.push(<Icon size="xs" type={iconRight} />);
 
     return (
-        <Wrapper size={size}>{children}</Wrapper>
+        <Wrapper iconLeft={iconLeft} iconRight={iconRight} size={size}>
+            {content}
+        </Wrapper>
     );
 };

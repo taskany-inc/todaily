@@ -1,6 +1,6 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { iconColorPrimary } from '../../@generated/themes';
 
@@ -31,13 +31,19 @@ interface IconProps {
     size: keyof typeof sizesMap;
     color?: string;
     stroke?: number;
+    inline?: boolean;
     onClick?: (e: React.MouseEvent) => void;
 }
 
-const StyledIcon = styled.span`
+const StyledIcon = styled.span<{ inline?: IconProps['inline'] }>`
     display: flex;
-    position: relative;
-    top: 2px;
+
+    ${({ inline }) =>
+        inline &&
+        css`
+            position: relative;
+            top: 2px;
+        `}
 `;
 
 export const Icon: React.FC<IconProps> = ({ type, size, color = iconColorPrimary, stroke = 1, onClick }) => {
