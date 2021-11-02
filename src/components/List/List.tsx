@@ -5,7 +5,6 @@ import { textColorPrimary, menuItemColorHover } from '../../@generated/themes';
 
 interface ListProps {
     ordered?: boolean;
-    interactive?: boolean;
     children: React.ReactElement<typeof ListItem>[];
 }
 
@@ -21,16 +20,8 @@ const StyledOrderedList = styled.ol`
     padding: 0;
 `;
 
-export const ListItem = styled.li<{ interactive?: boolean }>`
+export const ListItem = styled.li`
     padding: 6px 10px;
-
-    ${({ interactive }) =>
-        interactive &&
-        css`
-            &:hover {
-                background-color: ${menuItemColorHover};
-            }
-        `}
 `;
 
 export const List: React.FC<ListProps> = ({ ordered, children }) => {

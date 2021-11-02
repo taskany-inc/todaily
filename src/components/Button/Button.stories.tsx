@@ -17,7 +17,7 @@ Default.args = {
 
 export const Primary = Template.bind({});
 Primary.args = {
-    type: 'primary',
+    view: 'primary',
     children: 'Button',
 };
 

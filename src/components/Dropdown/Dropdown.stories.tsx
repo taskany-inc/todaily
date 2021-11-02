@@ -1,19 +1,21 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Menu } from './Menu';
+import { Dropdown } from './Dropdown';
 
 export default {
-    title: 'Components/Menu',
-    component: Menu,
+    title: 'Components/Dropdown',
+    component: Dropdown,
     parameters: { actions: { argTypesRegex: '^on.*' } },
-} as ComponentMeta<typeof Menu>;
+} as ComponentMeta<typeof Dropdown>;
 
-const Template: ComponentStory<typeof Menu> = (args) => <Menu {...args} />;
+const Template: ComponentStory<typeof Dropdown> = (args) => <Dropdown {...args} />;
 
 export const Link = Template.bind({});
 Link.args = {
+    text: 'Dropdown',
     type: 'link',
+    minWidth: 150,
     items: [
         {
             label: 'Item 1',
@@ -28,7 +30,9 @@ Link.args = {
 
 export const Radio = Template.bind({});
 Radio.args = {
+    text: 'Dropdown',
     type: 'radio',
+    minWidth: 150,
     items: [
         {
             label: 'Item 1',
@@ -43,7 +47,9 @@ Radio.args = {
 
 export const Check = Template.bind({});
 Check.args = {
+    text: 'Dropdown',
     type: 'check',
+    minWidth: 150,
     items: [
         {
             label: 'Item 1',

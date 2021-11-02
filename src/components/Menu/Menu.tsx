@@ -29,6 +29,8 @@ interface MenuProps {
 
 const StyledMenu = styled.div``;
 const StyledMenuItem = styled.div<{ checked?: boolean; disabled?: boolean; hovered?: boolean }>`
+    padding: 6px 10px;
+
     cursor: pointer;
 
     color: ${textColorPrimary};

@@ -1,13 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { iconColorPrimary } from '../../@generated/themes';
 import { useComponents } from '..';
 import { Icon } from '../Icon/Icon';
 import { User } from '../User/User';
 import { Popup } from '../Popup/Popup';
-import { Link } from '../Link/Link';
-import { List, ListItem } from '../List/List';
+import { Menu } from '../Menu/Menu';
 import { routes } from '../../hooks/router';
 
 const StyledHeader = styled.header`
@@ -53,7 +51,7 @@ export const Header: React.FC = () => {
         <StyledHeader>
             <StyledAlignContainer>
                 <ServicesSwitch>
-                    <Icon inline type="moreVertical" size="s" color={iconColorPrimary} />
+                    <Icon inline type="moreVertical" size="s" />
                 </ServicesSwitch>
 
                 <StyledHeaderItem>
@@ -65,7 +63,7 @@ export const Header: React.FC = () => {
                 </StyledHeaderItem>
 
                 <StyledHeaderItem>
-                    <Icon inline type="search" size="xs" color={iconColorPrimary} />
+                    <Icon inline type="search" size="xs" />
                 </StyledHeaderItem>
             </StyledAlignContainer>
 
@@ -77,18 +75,23 @@ export const Header: React.FC = () => {
                         minWidth={150}
                         target={
                             <StyledCreateButton>
-                                <Icon inline type="plusCircle" size="xs" color={iconColorPrimary} />
+                                <Icon inline type="plusCircle" size="xs" />
                             </StyledCreateButton>
                         }
                     >
-                        <List>
-                            <ListItem interactive>
-                                <Link href={routes.createPost()}>New post</Link>
-                            </ListItem>
-                            <ListItem interactive>
-                                <Link href={routes.createChannel()}>New channel</Link>
-                            </ListItem>
-                        </List>
+                        <Menu
+                            type="link"
+                            items={[
+                                {
+                                    label: 'New post',
+                                    href: routes.createPost(),
+                                },
+                                {
+                                    label: 'New channel',
+                                    href: routes.createChannel(),
+                                },
+                            ]}
+                        />
                     </Popup>
                 </StyledHeaderItem>
 
